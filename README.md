@@ -1,27 +1,26 @@
 # heroku-bp-node-build
 
-Heroku buildpack for node apps with build step
+Heroku buildpack for node apps with build step.
 
-Required `build` script in `package.json`
+Requires the `build` script in `package.json`.
 
-CLI installation
+## CLI installation
 
-```bash
-heroku create --buildpack https://github.com/carloluis/heroku-bp-node-build.git
-```
-
-Use before nodejs buildpack:
+Use after nodejs buildpack:
 
 ```bash
-$ heroku buildpacks:set https://github.com/heroku/heroku-buildpack-nodejs
-$ heroku buildpacks:add --index 2 https://github.com/carloluis/heroku-bp-node-build
+# create the app with nodejs buildpack
+heroku create my-app --buildpack heroku/nodejs
+
+# add heroku-bp-node-build
+heroku buildpacks:add --index 2 https://github.com/carloluis/heroku-bp-node-build
 ```
 
-Configure builpacks in `app.json` file:
+## Configure builpacks in `app.json` file:
 
 ```json
 {
-		"buildpacks": [
+	"buildpacks": [
 		{
 			"url": "heroku/nodejs"
 		},
@@ -31,3 +30,5 @@ Configure builpacks in `app.json` file:
 	]
 }
 ```
+
+More info on buildpacks [here](https://devcenter.heroku.com/articles/buildpacks)
