@@ -20,14 +20,14 @@ heroku buildpacks:add --index 2 https://github.com/carloluis/heroku-bp-node-buil
 
 ```json
 {
-	"buildpacks": [
-		{
-			"url": "heroku/nodejs"
-		},
-		{
-			"url": "https://github.com/carloluis/heroku-bp-node-build"
-		}
-	]
+    "buildpacks": [
+        {
+            "url": "heroku/nodejs"
+        },
+        {
+            "url": "https://github.com/carloluis/heroku-bp-node-build"
+        }
+    ]
 }
 ```
 
