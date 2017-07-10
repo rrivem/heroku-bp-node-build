@@ -77,7 +77,7 @@ build_step() {
 	fi
 	if [ -d "$BUILD_DIR/server/.node_modules" ]; then
 		rm -r "$BUILD_DIR/server/node_modules"
-		&& mv "$BUILD_DIR/server/.node_modules" "$BUILD_DIR/server/node_modules"
+		mv "$BUILD_DIR/server/.node_modules" "$BUILD_DIR/server/node_modules"
 	fi
 }
 
