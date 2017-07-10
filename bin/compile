@@ -40,7 +40,11 @@ export NODE_ENV='development'
 ### Restore /node_modules/
 
 restore_dependencies() {
-	[ -d "$BUILD_DIR/node_modules" ] && mv "$BUILD_DIR/node_modules" "$BUILD_DIR/_node_modules_"
+	[ -d "$BUILD_DIR/node_modules" ] && mv "$BUILD_DIR/node_modules" "$BUILD_DIR/.node_modules"
+
+	# check inside /client and /server dirs...
+	[ -d "$BUILD_DIR/client/node_modules" ] && mv "$BUILD_DIR/client/node_modules" "$BUILD_DIR/client/.node_modules"
+	[ -d "$BUILD_DIR/server/node_modules" ] && mv "$BUILD_DIR/server/node_modules" "$BUILD_DIR/server/.node_modules"
 
 	if $YARN; then
 		yarn_node_modules "$BUILD_DIR" | indent
@@ -49,7 +53,7 @@ restore_dependencies() {
 	fi
 }
 
-header "Restore /node_modules/"
+header "Restore dependencies"
 restore_dependencies
 
 ### Build-step
@@ -64,8 +68,17 @@ build_step() {
 	info "npm run build"
 	npm run build
 
-	rm -r "$BUILD_DIR/node_modules"
-	[ -d "$BUILD_DIR/_node_modules_" ] && mv "$BUILD_DIR/_node_modules_" "$BUILD_DIR/node_modules"
+	rm -r "$BUILD_DIR/node_modules" 2>/dev/null || true
+	[ -d "$BUILD_DIR/.node_modules" ] && mv "$BUILD_DIR/.node_modules" "$BUILD_DIR/node_modules"
+
+	if [ -d "$BUILD_DIR/client/.node_modules" ]; then
+		rm -r "$BUILD_DIR/client/node_modules"
+		mv "$BUILD_DIR/client/.node_modules" "$BUILD_DIR/client/node_modules"
+	fi
+	if [ -d "$BUILD_DIR/server/.node_modules" ]; then
+		rm -r "$BUILD_DIR/server/node_modules"
+		&& mv "$BUILD_DIR/server/.node_modules" "$BUILD_DIR/server/node_modules"
+	fi
 }
 
 header "Build-step"
