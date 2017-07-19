@@ -45,20 +45,30 @@ restore_dependencies() {
 	# check subdirectories for existing sub-projects
 	for dir in "$BUILD_DIR/"*; do
 		if [[ -d "$dir" && -f "$dir/package.json" ]]; then
-			if [ -d "$dir/node_modules" ]; then
+			if [[ -d "$dir/node_modules" ]]; then
 				mv "$dir/node_modules" "$dir/.node_modules"
 			fi
 		fi
 	done
 
+	# install dependencies...
 	if $YARN; then
 		yarn_node_modules "$BUILD_DIR" | indent
 	else
 		npm_node_modules "$BUILD_DIR" | indent
 	fi
+
+	# check for sub-projects...
+	for dir in "$BUILD_DIR/"*; do
+		if [[ -d "$dir" && -f "$dir/package.json" ]]; then
+			if [[ ! -d "$dir/node_modules" ]]; then
+				mv "$dir/.node_modules" "$dir/node_modules"
+			fi
+		fi
+	done
 }
 
-header "Restore dependencies"
+header "Restore dependencies..."
 restore_dependencies
 
 ### Build-step
@@ -84,7 +94,7 @@ build_step() {
 	done
 }
 
-header "Build-step"
+header "Execute build step..."
 build_step
 
 ### Restore environmet
